@@ -40,10 +40,15 @@ public class TaskDbServiceImpl implements TaskDbService{
 
     /**
      * Обновить задачу
-     * @param task Задача
+     * @param id ID задачи
+     * @param title заголовок задачи
+     * @param description описание задачи
      */
     @Override
-    public void update(Task task) {
+    public void update(Long id, String title, String description) {
+        Task task = taskRepository.findById(id).orElseThrow();
+        task.setTitle(title);
+        task.setDescription(description);
         taskRepository.save(task);
     }
 

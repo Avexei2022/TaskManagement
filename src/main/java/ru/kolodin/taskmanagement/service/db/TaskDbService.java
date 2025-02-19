@@ -24,9 +24,11 @@ public interface TaskDbService {
 
     /**
      * Обновить задачу
-     * @param task Задача
+     * @param id ID задачи
+     * @param title заголовок задачи
+     * @param description описание задачи
      */
-    void update(Task task);
+    void update(Long id, String title, String description);
 
     /**
      * Удалить задачу по ID
