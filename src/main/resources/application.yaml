@@ -1,0 +1,20 @@
+#SERVER
+server:
+  port:8081
+
+#SPRING
+spring:
+  application:
+    name: TaskManagement
+  jpa:
+    hibernate:
+      jdbc:
+        lob:
+          non_contextual_creation: true
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/task_management_db
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
