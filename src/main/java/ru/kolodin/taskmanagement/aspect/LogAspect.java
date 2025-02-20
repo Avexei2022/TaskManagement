@@ -1,7 +1,9 @@
 package ru.kolodin.taskmanagement.aspect;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 
 /**
  * Аспект логирования
@@ -36,6 +37,10 @@ public class LogAspect {
         logger.info(stringBuilder.toString());
     }
 
+    /**
+     * Логирование успешной работы метода с возвращаемыми значениями.
+     * @param result возвращаемое значение.
+     */
     @AfterReturning(
             value = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodReturn)"
             , returning = "result")
@@ -50,5 +55,26 @@ public class LogAspect {
             stringBuilder.append(result);
         }
         logger.info(stringBuilder.toString());
+    }
+
+    /**
+     * Логирование времени работы метода (производительности кода)
+     * @param joinPoint метод
+     * @return результат работы метода
+     */
+    @Around("@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodPerformance)")
+    public Object logMethodPerformance(ProceedingJoinPoint joinPoint) {
+        long startTime = System.currentTimeMillis();
+
+        Object result;
+        try {
+            result = joinPoint.proceed();
+        } catch (Throwable e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        long endTime = System.currentTimeMillis();
+        logger.info("Execution time of Method " + joinPoint.getSignature() + " (ms): " + (endTime - startTime));
+        return result;
     }
 }
