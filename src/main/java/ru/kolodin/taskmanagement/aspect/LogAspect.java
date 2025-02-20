@@ -21,7 +21,7 @@ public class LogAspect {
      * Логирование вызова методов с входными параметрами
      * @param joinPoint вызов метода
      */
-    @Before("@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogExecution)")
+    @Before("@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodCall)")
     public void logAnnotationBefore(JoinPoint joinPoint) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Call method: ")
