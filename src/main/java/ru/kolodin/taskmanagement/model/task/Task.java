@@ -1,10 +1,7 @@
 package ru.kolodin.taskmanagement.model.task;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 /**
  * Задача
@@ -14,6 +11,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @Setter
 @Getter
+@EqualsAndHashCode
 @ToString
 public class Task {
 

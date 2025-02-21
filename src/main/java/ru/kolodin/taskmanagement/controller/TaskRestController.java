@@ -5,6 +5,10 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodCall;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodException;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodPerformance;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodReturn;
 import ru.kolodin.taskmanagement.model.task.Task;
 import ru.kolodin.taskmanagement.model.task.TaskDto;
 import ru.kolodin.taskmanagement.service.db.TaskDbService;
@@ -27,6 +31,8 @@ public class TaskRestController {
      * @param taskDto задача
      * @return статус ответа
      */
+    @LogMethodCall
+    @LogMethodException
     @PostMapping("")
     public ResponseEntity<Void> add(@RequestBody TaskDto taskDto) {
         taskDbService.add(modelMapper.map(taskDto, Task.class));
@@ -38,6 +44,9 @@ public class TaskRestController {
      * @param id ID задачи
      * @return задача и статус ответа
      */
+    @LogMethodCall
+    @LogMethodException
+    @LogMethodPerformance
     @GetMapping("/{id}")
     public ResponseEntity<TaskDto> getById(@PathVariable("id") Long id) {
         TaskDto taskDto = modelMapper.map(taskDbService.getById(id), TaskDto.class);
@@ -51,6 +60,8 @@ public class TaskRestController {
      * @param description описание задачи
      * @return статус ответа
      */
+    @LogMethodCall
+    @LogMethodException
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable("id") Long id,
                                        @RequestParam String title,
@@ -64,6 +75,8 @@ public class TaskRestController {
      * @param id ID задачи
      * @return статус ответа
      */
+    @LogMethodCall
+    @LogMethodException
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         taskDbService.deleteById(id);
@@ -74,6 +87,9 @@ public class TaskRestController {
      * Получить список всех задач
      * @return список задач и статус ответа
      */
+    @LogMethodCall
+    @LogMethodException
+    @LogMethodPerformance
     @GetMapping("")
     public ResponseEntity<List<TaskDto>> getAll() {
         List<TaskDto> tasksDto = taskDbService.getAll().stream().map(

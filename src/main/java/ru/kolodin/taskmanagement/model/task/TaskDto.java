@@ -1,8 +1,15 @@
 package ru.kolodin.taskmanagement.model.task;
 
+import lombok.*;
+
 /**
  * ДТО задачи
  */
+@RequiredArgsConstructor
+@Setter
+@Getter
+@EqualsAndHashCode
+@ToString
 public class TaskDto {
 
     /**

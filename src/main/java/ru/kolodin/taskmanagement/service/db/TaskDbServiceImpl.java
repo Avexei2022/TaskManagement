@@ -2,6 +2,10 @@ package ru.kolodin.taskmanagement.service.db;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodCall;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodException;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodPerformance;
+import ru.kolodin.taskmanagement.aspect.annotation.LogMethodReturn;
 import ru.kolodin.taskmanagement.model.task.Task;
 import ru.kolodin.taskmanagement.repository.TaskRepository;
 
@@ -21,6 +25,8 @@ public class TaskDbServiceImpl implements TaskDbService{
      * Создать новую задачу и добавить в базу данных
      * @param task задача
      */
+    @LogMethodCall
+    @LogMethodException
     @Override
     public void add(Task task) {
         task.setId(null);
@@ -32,6 +38,10 @@ public class TaskDbServiceImpl implements TaskDbService{
      * @param id ID задачи
      * @return задача
      */
+    @LogMethodCall
+    @LogMethodReturn
+    @LogMethodException
+    @LogMethodPerformance
     @Override
     public Task getById(Long id) {
         Optional<Task> taskOptional = taskRepository.findById(id);
@@ -44,6 +54,8 @@ public class TaskDbServiceImpl implements TaskDbService{
      * @param title заголовок задачи
      * @param description описание задачи
      */
+    @LogMethodCall
+    @LogMethodException
     @Override
     public void update(Long id, String title, String description) {
         Task task = taskRepository.findById(id).orElseThrow();
@@ -56,6 +68,8 @@ public class TaskDbServiceImpl implements TaskDbService{
      * Удалить задачу по ID
      * @param id ID задачи
      */
+    @LogMethodCall
+    @LogMethodException
     @Override
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
@@ -65,6 +79,10 @@ public class TaskDbServiceImpl implements TaskDbService{
      * Получить список всех задач
      * @return список задач
      */
+    @LogMethodCall
+    @LogMethodReturn
+    @LogMethodException
+    @LogMethodPerformance
     @Override
     public List<Task> getAll() {
         return taskRepository.findAll();
