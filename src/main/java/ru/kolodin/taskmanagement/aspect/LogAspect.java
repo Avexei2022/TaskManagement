@@ -2,10 +2,7 @@ package ru.kolodin.taskmanagement.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -76,5 +73,18 @@ public class LogAspect {
         long endTime = System.currentTimeMillis();
         logger.info("Execution time of Method " + joinPoint.getSignature() + " (ms): " + (endTime - startTime));
         return result;
+    }
+
+    /**
+     * Логирование исключений в методах
+     * @param joinPoint метод
+     * @param exception исключение
+     */
+    @AfterThrowing(
+            pointcut = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodException)",
+                throwing = "exception")
+    public void logMethodException(JoinPoint joinPoint, Throwable exception) {
+        logger.info("Exception caught in " + joinPoint.getSignature() +
+                ". Exception type is " + exception.getClass().getName());
     }
 }
