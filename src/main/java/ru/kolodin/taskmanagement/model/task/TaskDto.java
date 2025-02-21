@@ -3,7 +3,7 @@ package ru.kolodin.taskmanagement.model.task;
 /**
  * ДТО задачи
  */
-public class TaskDTO {
+public class TaskDto {
 
     /**
      * Уникальный идентификатор задачи.

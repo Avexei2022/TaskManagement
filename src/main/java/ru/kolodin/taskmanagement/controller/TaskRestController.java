@@ -1,10 +1,12 @@
 package ru.kolodin.taskmanagement.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolodin.taskmanagement.model.task.Task;
+import ru.kolodin.taskmanagement.model.task.TaskDto;
 import ru.kolodin.taskmanagement.service.db.TaskDbService;
 
 import java.util.List;
@@ -18,27 +20,28 @@ import java.util.List;
 public class TaskRestController {
 
     private final TaskDbService taskDbService;
+    private final ModelMapper modelMapper;
 
     /**
      * Создать новую задачу
-     * @param task задача
+     * @param taskDto задача
      * @return статус ответа
      */
     @PostMapping("")
-    public ResponseEntity<Void> add(@RequestBody Task task) {
-        taskDbService.add(task);
+    public ResponseEntity<Void> add(@RequestBody TaskDto taskDto) {
+        taskDbService.add(modelMapper.map(taskDto, Task.class));
         return ResponseEntity.ok().build();
     }
 
     /**
-     * Получит задачу по ID
+     * Получить задачу по ID
      * @param id ID задачи
      * @return задача и статус ответа
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Task> getById(@PathVariable("id") Long id) {
-        Task task = taskDbService.getById(id);
-        return new ResponseEntity<>(task,HttpStatus.OK);
+    public ResponseEntity<TaskDto> getById(@PathVariable("id") Long id) {
+        TaskDto taskDto = modelMapper.map(taskDbService.getById(id), TaskDto.class);
+        return new ResponseEntity<>(taskDto, HttpStatus.OK);
     }
 
     /**
@@ -72,8 +75,10 @@ public class TaskRestController {
      * @return список задач и статус ответа
      */
     @GetMapping("")
-    public ResponseEntity<List<Task>> getAll() {
-        List<Task> tasks = taskDbService.getAll();
-        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    public ResponseEntity<List<TaskDto>> getAll() {
+        List<TaskDto> tasksDto = taskDbService.getAll().stream().map(
+                e -> modelMapper.map(e, TaskDto.class)
+        ).toList();
+        return new ResponseEntity<>(tasksDto, HttpStatus.OK);
     }
 }
