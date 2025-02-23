@@ -1,5 +1,6 @@
 package ru.kolodin.taskmanagement.aspect;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -12,11 +13,10 @@ import java.util.logging.Logger;
 /**
  * Аспект логирования
  */
+@Slf4j
 @Component
 @Aspect
 public class LogAspect {
-
-    private final Logger logger = Logger.getLogger(LogAspect.class.getName());
 
     /**
      * Логирование вызова методов с входными параметрами
@@ -31,7 +31,7 @@ public class LogAspect {
         Arrays.stream(joinPoint.getArgs()).forEach(
                 arg -> stringBuilder.append(arg).append(", ")
         );
-        logger.info(stringBuilder.toString());
+        log.debug(stringBuilder.toString());
     }
 
     /**
@@ -51,7 +51,7 @@ public class LogAspect {
         } else {
             stringBuilder.append(result);
         }
-        logger.info(stringBuilder.toString());
+        log.debug(stringBuilder.toString());
     }
 
     /**
@@ -71,7 +71,9 @@ public class LogAspect {
         }
 
         long endTime = System.currentTimeMillis();
-        logger.info("Execution time of Method " + joinPoint.getSignature() + " (ms): " + (endTime - startTime));
+        log.info("Execution time of Method {} (ms): {}",
+                joinPoint.getSignature(),
+                endTime - startTime);
         return result;
     }
 
@@ -84,7 +86,8 @@ public class LogAspect {
             pointcut = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException)",
                 throwing = "exception")
     public void logMethodException(JoinPoint joinPoint, Throwable exception) {
-        logger.info("Exception caught in " + joinPoint.getSignature() +
-                ". Exception type is " + exception.getClass().getName());
+        log.error("Exception caught in {}. Exception type is {}",
+                joinPoint.getSignature(),
+                exception.getClass().getName());
     }
 }

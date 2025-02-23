@@ -62,7 +62,8 @@ public class TaskDbServiceImpl implements TaskDbService{
     @ExceptionNotFoundAndBadRequest
     @Override
     public void update(Long id, String title, String description) {
-        Task task = taskRepository.findById(id).orElseThrow();
+        Task task = taskRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Элемент не найден или ресурс недоступен."));
         task.setTitle(title);
         task.setDescription(description);
         taskRepository.save(task);
@@ -77,7 +78,11 @@ public class TaskDbServiceImpl implements TaskDbService{
     @ExceptionNotFoundAndBadRequest
     @Override
     public void deleteById(Long id) {
-        taskRepository.deleteById(id);
+        if (taskRepository.existsById(id)) {
+            taskRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Элемент для удаления не найден или ресурс недоступен.");
+        }
     }
 
     /**
