@@ -1,4 +1,4 @@
-package ru.kolodin.taskmanagement.aspect.annotation;
+package ru.kolodin.taskmanagement.aspect.annotation.log;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

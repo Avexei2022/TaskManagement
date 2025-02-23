@@ -22,7 +22,7 @@ public class LogAspect {
      * Логирование вызова методов с входными параметрами
      * @param joinPoint вызов метода
      */
-    @Before("@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodCall)")
+    @Before("@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall)")
     public void logMethodCall(JoinPoint joinPoint) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Call method: ")
@@ -39,7 +39,7 @@ public class LogAspect {
      * @param result возвращаемое значение.
      */
     @AfterReturning(
-            value = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodReturn)"
+            value = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodReturn)"
             , returning = "result")
     public void logMethodReturn(Object result) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -59,7 +59,7 @@ public class LogAspect {
      * @param joinPoint метод
      * @return результат работы метода
      */
-    @Around("@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodPerformance)")
+    @Around("@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance)")
     public Object logMethodPerformance(ProceedingJoinPoint joinPoint) {
         long startTime = System.currentTimeMillis();
 
@@ -81,7 +81,7 @@ public class LogAspect {
      * @param exception исключение
      */
     @AfterThrowing(
-            pointcut = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.LogMethodException)",
+            pointcut = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException)",
                 throwing = "exception")
     public void logMethodException(JoinPoint joinPoint, Throwable exception) {
         logger.info("Exception caught in " + joinPoint.getSignature() +

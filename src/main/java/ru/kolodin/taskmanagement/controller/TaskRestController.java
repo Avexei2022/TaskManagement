@@ -5,10 +5,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodCall;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodException;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodPerformance;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodReturn;
+import ru.kolodin.taskmanagement.aspect.annotation.exception.RestExceptionNotFoundAndBadRequest;
+import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
+import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
+import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
+import ru.kolodin.taskmanagement.model.exception.AppException;
+import ru.kolodin.taskmanagement.model.exception.ResourceNotFoundException;
 import ru.kolodin.taskmanagement.model.task.Task;
 import ru.kolodin.taskmanagement.model.task.TaskDto;
 import ru.kolodin.taskmanagement.service.db.TaskDbService;
@@ -33,6 +35,7 @@ public class TaskRestController {
      */
     @LogMethodCall
     @LogMethodException
+    @RestExceptionNotFoundAndBadRequest
     @PostMapping("")
     public ResponseEntity<Void> add(@RequestBody TaskDto taskDto) {
         taskDbService.add(modelMapper.map(taskDto, Task.class));
@@ -47,6 +50,7 @@ public class TaskRestController {
     @LogMethodCall
     @LogMethodException
     @LogMethodPerformance
+    @RestExceptionNotFoundAndBadRequest
     @GetMapping("/{id}")
     public ResponseEntity<TaskDto> getById(@PathVariable("id") Long id) {
         TaskDto taskDto = modelMapper.map(taskDbService.getById(id), TaskDto.class);
@@ -62,6 +66,7 @@ public class TaskRestController {
      */
     @LogMethodCall
     @LogMethodException
+    @RestExceptionNotFoundAndBadRequest
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable("id") Long id,
                                        @RequestParam String title,
@@ -77,6 +82,7 @@ public class TaskRestController {
      */
     @LogMethodCall
     @LogMethodException
+    @RestExceptionNotFoundAndBadRequest
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         taskDbService.deleteById(id);
@@ -90,6 +96,7 @@ public class TaskRestController {
     @LogMethodCall
     @LogMethodException
     @LogMethodPerformance
+    @RestExceptionNotFoundAndBadRequest
     @GetMapping("")
     public ResponseEntity<List<TaskDto>> getAll() {
         List<TaskDto> tasksDto = taskDbService.getAll().stream().map(

@@ -9,6 +9,7 @@ import lombok.*;
 @Entity
 @Table(name = "tasks")
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Setter
 @Getter
 @EqualsAndHashCode
@@ -38,6 +39,5 @@ public class Task {
     /**
      * Уникальный идентификатор пользователя
      */
-    @Column(name = "user")
-    private Long userId;
+     private Long userId;
 }

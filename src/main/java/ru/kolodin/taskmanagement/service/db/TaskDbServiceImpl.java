@@ -2,15 +2,14 @@ package ru.kolodin.taskmanagement.service.db;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodCall;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodException;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodPerformance;
-import ru.kolodin.taskmanagement.aspect.annotation.LogMethodReturn;
+import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
+import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
+import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
+import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodReturn;
 import ru.kolodin.taskmanagement.model.task.Task;
 import ru.kolodin.taskmanagement.repository.TaskRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Сервис базы данных задач
@@ -44,8 +43,8 @@ public class TaskDbServiceImpl implements TaskDbService{
     @LogMethodPerformance
     @Override
     public Task getById(Long id) {
-        Optional<Task> taskOptional = taskRepository.findById(id);
-        return taskOptional.orElseThrow();
+        return taskRepository.findById(id).orElse(
+                new Task(null, "none", "none", null));
     }
 
     /**
