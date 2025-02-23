@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import ru.kolodin.taskmanagement.model.exception.AppException;
 import ru.kolodin.taskmanagement.model.exception.ResourceNotFoundException;
 
+/**
+ * Аспект исключений
+ */
 @Component
 @Aspect
 public class ExceptionAspect {
@@ -16,7 +19,7 @@ public class ExceptionAspect {
      * @param joinPoint точка входа
      * @return результат работы метода
      */
-    @Around("@annotation(ru.kolodin.taskmanagement.aspect.annotation.exception.RestExceptionNotFoundAndBadRequest)")
+    @Around("@annotation(ru.kolodin.taskmanagement.aspect.annotation.exception.ExceptionNotFoundAndBadRequest)")
     public Object restMethodExceptionNotFoundAndBadRequest(ProceedingJoinPoint joinPoint) {
         Object result;
         try {

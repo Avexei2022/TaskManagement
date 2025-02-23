@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface RestExceptionNotFoundAndBadRequest {
+public @interface ExceptionNotFoundAndBadRequest {
 }

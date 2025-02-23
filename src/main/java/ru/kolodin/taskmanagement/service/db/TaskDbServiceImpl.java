@@ -2,6 +2,7 @@ package ru.kolodin.taskmanagement.service.db;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.kolodin.taskmanagement.aspect.annotation.exception.ExceptionNotFoundAndBadRequest;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
@@ -26,6 +27,7 @@ public class TaskDbServiceImpl implements TaskDbService{
      */
     @LogMethodCall
     @LogMethodException
+    @ExceptionNotFoundAndBadRequest
     @Override
     public void add(Task task) {
         task.setId(null);
@@ -40,11 +42,11 @@ public class TaskDbServiceImpl implements TaskDbService{
     @LogMethodCall
     @LogMethodReturn
     @LogMethodException
+    @ExceptionNotFoundAndBadRequest
     @LogMethodPerformance
     @Override
     public Task getById(Long id) {
-        return taskRepository.findById(id).orElse(
-                new Task(null, "none", "none", null));
+        return taskRepository.findById(id).orElseThrow();
     }
 
     /**
@@ -55,6 +57,7 @@ public class TaskDbServiceImpl implements TaskDbService{
      */
     @LogMethodCall
     @LogMethodException
+    @ExceptionNotFoundAndBadRequest
     @Override
     public void update(Long id, String title, String description) {
         Task task = taskRepository.findById(id).orElseThrow();
@@ -69,6 +72,7 @@ public class TaskDbServiceImpl implements TaskDbService{
      */
     @LogMethodCall
     @LogMethodException
+    @ExceptionNotFoundAndBadRequest
     @Override
     public void deleteById(Long id) {
         taskRepository.deleteById(id);
@@ -81,6 +85,7 @@ public class TaskDbServiceImpl implements TaskDbService{
     @LogMethodCall
     @LogMethodReturn
     @LogMethodException
+    @ExceptionNotFoundAndBadRequest
     @LogMethodPerformance
     @Override
     public List<Task> getAll() {
