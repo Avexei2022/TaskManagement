@@ -52,4 +52,11 @@ public class TaskRestExceptionController {
                 .status(HttpStatus.SEE_OTHER)
                 .body(new ExceptionBody(e.getMessage(), LocalDateTime.now()));
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ExceptionBody> anyOtherException(RuntimeException e) {
+        return ResponseEntity
+                .status(HttpStatus.SEE_OTHER)
+                .body(new ExceptionBody(e.getMessage(), LocalDateTime.now()));
+    }
 }

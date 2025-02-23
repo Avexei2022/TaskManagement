@@ -7,6 +7,7 @@ import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodReturn;
+import ru.kolodin.taskmanagement.model.exception.ResourceNotFoundException;
 import ru.kolodin.taskmanagement.model.task.Task;
 import ru.kolodin.taskmanagement.repository.TaskRepository;
 
@@ -46,7 +47,8 @@ public class TaskDbServiceImpl implements TaskDbService{
     @LogMethodPerformance
     @Override
     public Task getById(Long id) {
-        return taskRepository.findById(id).orElseThrow();
+        return taskRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Элемент не найден или ресурс недоступен."));
     }
 
     /**
