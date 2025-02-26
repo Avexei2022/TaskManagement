@@ -2,16 +2,18 @@ package ru.kolodin.taskmanagement.service.db;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.kolodin.taskmanagement.aspect.annotation.exception.ExceptionNotFoundAndBadRequest;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodReturn;
+import ru.kolodin.taskmanagement.model.exception.AppException;
 import ru.kolodin.taskmanagement.model.exception.ResourceNotFoundException;
-import ru.kolodin.taskmanagement.model.task.Task;
+import ru.kolodin.taskmanagement.model.task.TaskDto;
 import ru.kolodin.taskmanagement.repository.TaskRepository;
+import ru.kolodin.taskmanagement.util.TaskMapper;
 
 import java.util.List;
+
 
 /**
  * Сервис базы данных задач
@@ -24,15 +26,13 @@ public class TaskDbServiceImpl implements TaskDbService{
 
     /**
      * Создать новую задачу и добавить в базу данных
-     * @param task задача
+     * @param taskDto DTO задачи
      */
     @LogMethodCall
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @Override
-    public void add(Task task) {
-        task.setId(null);
-        taskRepository.save(task);
+    public void add(TaskDto taskDto) {
+        taskRepository.save(TaskMapper.toNewEntity(taskDto));
     }
 
     /**
@@ -43,30 +43,32 @@ public class TaskDbServiceImpl implements TaskDbService{
     @LogMethodCall
     @LogMethodReturn
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @LogMethodPerformance
     @Override
-    public Task getById(Long id) {
-        return taskRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Элемент не найден или ресурс недоступен."));
+    public TaskDto getById(Long id) {
+        return TaskMapper.toDto(taskRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Task with ID " + id + " not found")
+        ));
     }
 
     /**
      * Обновить задачу
      * @param id ID задачи
-     * @param title заголовок задачи
-     * @param description описание задачи
+     * @param taskDto ДТО задачи
      */
     @LogMethodCall
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @Override
-    public void update(Long id, String title, String description) {
-        Task task = taskRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Элемент не найден или ресурс недоступен."));
-        task.setTitle(title);
-        task.setDescription(description);
-        taskRepository.save(task);
+    public void update(Long id, TaskDto taskDto) {
+        if (taskRepository.existsById(id)) {
+            try {
+                taskRepository.save(TaskMapper.toUpdateEntityById(id, taskDto));
+            } catch (AppException e) {
+                throw new AppException("Unable to update task with ID " + id);
+            }
+        } else {
+            throw new ResourceNotFoundException("Task with ID " + id + " not found.");
+        }
     }
 
     /**
@@ -75,13 +77,18 @@ public class TaskDbServiceImpl implements TaskDbService{
      */
     @LogMethodCall
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @Override
     public void deleteById(Long id) {
         if (taskRepository.existsById(id)) {
-            taskRepository.deleteById(id);
+            try {
+                taskRepository.deleteById(id);
+            } catch (AppException e) {
+                throw new AppException("Unable to delete task with ID " + id);
+            }
+
         } else {
-            throw new ResourceNotFoundException("Элемент для удаления не найден или ресурс недоступен.");
+            throw new ResourceNotFoundException(
+                    "Task with ID " + id + " not found. Nothing to delete");
         }
     }
 
@@ -92,10 +99,19 @@ public class TaskDbServiceImpl implements TaskDbService{
     @LogMethodCall
     @LogMethodReturn
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @LogMethodPerformance
     @Override
-    public List<Task> getAll() {
-        return taskRepository.findAll();
+    public List<TaskDto> getAll() {
+        List<TaskDto> taskDtos;
+        try {
+            taskDtos = taskRepository.findAll()
+                    .stream().map(TaskMapper::toDto).toList();
+        } catch (AppException e) {
+            throw new AppException("Unable to get list of tasks.");
+        }
+        if (taskDtos.isEmpty()) {
+            throw new ResourceNotFoundException("List of tasks is empty");
+        }
+        return taskDtos;
     }
 }

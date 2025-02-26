@@ -1,15 +1,11 @@
 package ru.kolodin.taskmanagement.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.kolodin.taskmanagement.aspect.annotation.exception.ExceptionNotFoundAndBadRequest;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
-import ru.kolodin.taskmanagement.model.task.Task;
 import ru.kolodin.taskmanagement.model.task.TaskDto;
 import ru.kolodin.taskmanagement.service.db.TaskDbService;
 
@@ -24,20 +20,17 @@ import java.util.List;
 public class TaskRestController {
 
     private final TaskDbService taskDbService;
-    private final ModelMapper modelMapper;
 
     /**
      * Создать новую задачу
      * @param taskDto задача
-     * @return статус ответа
      */
     @LogMethodCall
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @PostMapping("")
-    public ResponseEntity<Void> add(@RequestBody TaskDto taskDto) {
-        taskDbService.add(modelMapper.map(taskDto, Task.class));
-        return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.CREATED)
+    public void add(@RequestBody TaskDto taskDto) {
+        taskDbService.add(taskDto);
     }
 
     /**
@@ -48,43 +41,33 @@ public class TaskRestController {
     @LogMethodCall
     @LogMethodException
     @LogMethodPerformance
-    @ExceptionNotFoundAndBadRequest
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDto> getById(@PathVariable("id") Long id) {
-        TaskDto taskDto = modelMapper.map(taskDbService.getById(id), TaskDto.class);
-        return new ResponseEntity<>(taskDto, HttpStatus.OK);
+    public TaskDto getById(@PathVariable("id") Long id) {
+        return taskDbService.getById(id);
     }
 
     /**
      * Обновить задачу
      * @param id ID задачи
-     * @param title заголовок задачи
-     * @param description описание задачи
-     * @return статус ответа
+     * @param taskDto ДТО задачи
      */
     @LogMethodCall
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") Long id,
-                                       @RequestParam String title,
-                                       @RequestParam String description) {
-        taskDbService.update(id, title, description);
-        return ResponseEntity.ok().build();
+    public void update(@PathVariable("id") Long id,
+                                       @RequestBody TaskDto taskDto) {
+          taskDbService.update(id, taskDto);
     }
 
     /**
      * Удалить задачу по ID
      * @param id ID задачи
-     * @return статус ответа
      */
     @LogMethodCall
     @LogMethodException
-    @ExceptionNotFoundAndBadRequest
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+    public void delete(@PathVariable("id") Long id) {
         taskDbService.deleteById(id);
-        return ResponseEntity.ok().build();
     }
 
     /**
@@ -94,12 +77,8 @@ public class TaskRestController {
     @LogMethodCall
     @LogMethodException
     @LogMethodPerformance
-    @ExceptionNotFoundAndBadRequest
     @GetMapping("")
-    public ResponseEntity<List<TaskDto>> getAll() {
-        List<TaskDto> tasksDto = taskDbService.getAll().stream().map(
-                e -> modelMapper.map(e, TaskDto.class)
-        ).toList();
-        return new ResponseEntity<>(tasksDto, HttpStatus.OK);
+    public List<TaskDto> getAll() {
+        return taskDbService.getAll();
     }
 }

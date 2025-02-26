@@ -5,11 +5,8 @@ import lombok.*;
 /**
  * ДТО задачи
  */
-@RequiredArgsConstructor
-@Setter
-@Getter
-@EqualsAndHashCode
-@ToString
+@Data
+@Builder
 public class TaskDto {
 
     /**
