@@ -61,19 +61,21 @@ public class LogAspect {
      */
     @Around("@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance)")
     public Object logMethodPerformance(ProceedingJoinPoint joinPoint) {
+        long startTime = System.currentTimeMillis();
 
-        Object result;
+        Object proceeded;
         try {
-            long startTime = System.currentTimeMillis();
-            result = joinPoint.proceed();
-            long endTime = System.currentTimeMillis();
-            log.info("Execution time of Method {} (ms): {}",
-                    joinPoint.getSignature(),
-                    endTime - startTime);
+            proceeded = joinPoint.proceed();
         } catch (Throwable e) {
             throw new RuntimeException(e.getMessage());
         }
-        return result;
+
+        long endTime = System.currentTimeMillis();
+        log.info("Execution time of Method {} (ms): {}",
+                joinPoint.getSignature(),
+                endTime - startTime);
+
+        return proceeded;
     }
 
     /**
