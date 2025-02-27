@@ -10,3 +10,37 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: task_management_db
+  kafka:
+    image: 'bitnami/kafka:latest'
+    hostname: task_kafka
+    # container settings
+    container_name: task_kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+      - "9093:9093" # port for client connection (producer / consumer)
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes
+      - KAFKA_CFG_NODE_ID=0
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CLIENT://:29092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092,CLIENT://task_kafka:29092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,CLIENT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@task_kafka:9093
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_KRAFT_CLUSTER_ID=L0ZEQh1yTbGhNNUE7-6wSQ
+
+  kafka-ui:
+    container_name: task_kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - kafka
+    restart: always
+    environment:
+      - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=task_kafka:29092
+      - KAFKA_CLUSTERS_0_NAME=task_management
+    links:
+      - kafka
