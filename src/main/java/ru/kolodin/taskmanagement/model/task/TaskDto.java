@@ -1,5 +1,6 @@
 package ru.kolodin.taskmanagement.model.task;
 
+import jakarta.persistence.Column;
 import lombok.*;
 
 /**
@@ -23,6 +24,11 @@ public class TaskDto {
      * Описание задачи
      */
     private String description;
+
+    /**
+     * Статус задачи
+     */
+    private TaskStatus status;
 
     /**
      * Уникальный идентификатор пользователя

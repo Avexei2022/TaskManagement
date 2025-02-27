@@ -48,6 +48,7 @@ public class TaskMapper {
                 .id(null)
                 .title(taskDto.getTitle())
                 .description(taskDto.getDescription())
+                .status(taskDto.getStatus())
                 .userId(taskDto.getUserId())
                 .build();
     }
@@ -63,6 +64,7 @@ public class TaskMapper {
                 .id(id)
                 .title(taskDto.getTitle())
                 .description(taskDto.getDescription())
+                .status(taskDto.getStatus())
                 .userId(taskDto.getUserId())
                 .build();
     }

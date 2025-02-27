@@ -40,6 +40,12 @@ public class Task {
     private String description;
 
     /**
+     * Статус задачи
+     */
+    @Column(name = "status")
+    private TaskStatus status;
+
+    /**
      * Уникальный идентификатор пользователя
      */
      private Long userId;
