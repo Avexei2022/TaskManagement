@@ -48,6 +48,7 @@ public class Task {
     /**
      * Уникальный идентификатор пользователя
      */
+    @Column(name = "user_id")
      private Long userId;
 
     @Override

@@ -3,6 +3,7 @@ package ru.kolodin.taskmanagement.util;
 import org.springframework.stereotype.Component;
 import ru.kolodin.taskmanagement.model.task.Task;
 import ru.kolodin.taskmanagement.model.task.TaskDto;
+import ru.kolodin.taskmanagement.model.task.TaskIdStatusDto;
 
 /**
  * Маппер задач
@@ -68,4 +69,5 @@ public class TaskMapper {
                 .userId(taskDto.getUserId())
                 .build();
     }
+
 }

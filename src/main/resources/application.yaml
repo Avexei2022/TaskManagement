@@ -1,6 +1,5 @@
-#SERVER
 server:
-  port:8080
+  port: 8081
 
 #SPRING
 spring:
@@ -11,10 +10,36 @@ spring:
       jdbc:
         lob:
           non_contextual_creation: true
-      ddl-auto: update
+      ddl-auto: update # create-drop
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/task_management_db
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
+
+task:
+  scan-path: ru.kolodin.taskmanagement
+  kafka:
+    bootstrap:
+      server: localhost:9092
+    consumer:
+      group-id: task-group
+      max.poll.records: 10
+    producer:
+      enable: true
+    topic:
+      task-mng: task_management
+    listener:
+      poll-timeout: 1000
+    session:
+      timeout:
+        ms: 15000
+    max:
+      partition:
+        fetch:
+          bytes: 300000
+      poll:
+        records: 1
+        intervals:
+          ms: 3000
