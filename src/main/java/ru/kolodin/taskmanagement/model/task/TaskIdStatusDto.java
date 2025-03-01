@@ -2,18 +2,20 @@ package ru.kolodin.taskmanagement.model.task;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * ДТО задачи
+ * ДТО задачи для Кафка
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
-public class TaskDto {
+public class TaskIdStatusDto {
 
     /**
      * Уникальный идентификатор задачи.
@@ -22,26 +24,9 @@ public class TaskDto {
     private Long id;
 
     /**
-     * Заголовок задачи
-     */
-    @JsonProperty("title")
-    private String title;
-
-    /**
-     * Описание задачи
-     */
-    @JsonProperty("description")
-    private String description;
-
-    /**
      * Статус задачи
      */
     @JsonProperty("status")
     private TaskStatus status;
 
-    /**
-     * Уникальный идентификатор пользователя
-     */
-    @JsonProperty("user_id")
-    private Long userId;
 }

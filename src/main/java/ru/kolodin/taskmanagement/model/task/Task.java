@@ -40,8 +40,16 @@ public class Task {
     private String description;
 
     /**
+     * Статус задачи
+     */
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
+    /**
      * Уникальный идентификатор пользователя
      */
+    @Column(name = "user_id")
      private Long userId;
 
     @Override

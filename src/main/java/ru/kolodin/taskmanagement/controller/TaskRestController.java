@@ -1,12 +1,15 @@
 package ru.kolodin.taskmanagement.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
+import ru.kolodin.taskmanagement.kafka.KafkaTaskProducer;
 import ru.kolodin.taskmanagement.model.task.TaskDto;
+import ru.kolodin.taskmanagement.model.task.TaskIdStatusDto;
 import ru.kolodin.taskmanagement.service.db.TaskDbService;
 
 import java.util.List;
@@ -20,6 +23,9 @@ import java.util.List;
 public class TaskRestController {
 
     private final TaskDbService taskDbService;
+    private final KafkaTaskProducer kafkaTaskProducer;
+    @Value("${task.kafka.topic.task-mng}")
+    private String topic;
 
     /**
      * Создать новую задачу
@@ -57,6 +63,7 @@ public class TaskRestController {
     public void update(@PathVariable("id") Long id,
                                        @RequestBody TaskDto taskDto) {
           taskDbService.update(id, taskDto);
+          kafkaTaskProducer.sendTo(topic, new TaskIdStatusDto(id, taskDto.getStatus()));
     }
 
     /**
