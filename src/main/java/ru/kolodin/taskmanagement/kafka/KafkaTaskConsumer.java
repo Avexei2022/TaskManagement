@@ -2,7 +2,6 @@ package ru.kolodin.taskmanagement.kafka;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -29,6 +28,7 @@ public class KafkaTaskConsumer {
         log.debug("Task consumer: Processing new messages...");
         try {
             notificationService.toLog(taskIdStatusDto);
+            notificationService.toMail(taskIdStatusDto);
         } finally {
             ack.acknowledge();
         }

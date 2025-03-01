@@ -43,6 +43,7 @@ public class Task {
      * Статус задачи
      */
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
     /**

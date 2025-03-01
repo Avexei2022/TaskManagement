@@ -42,4 +42,12 @@ task:
       poll:
         records: 1
         intervals:
-          ms: 3000
+          ms: 15000
+
+mail:
+  host: smtp.mail.ru
+  port: 465
+  username: javadev2024@mail.ru
+  password: mmaXw2bJQiyuYcPbtLML
+  mail-from: javadev2024@mail.ru
+  mail-to: javadev2024@mail.ru
