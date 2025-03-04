@@ -34,6 +34,7 @@ public class TaskMapper {
                 .id(task.getId())
                 .title(task.getTitle())
                 .description(task.getDescription())
+                .status(task.getStatus())
                 .userId(task.getUserId())
                 .build();
     }

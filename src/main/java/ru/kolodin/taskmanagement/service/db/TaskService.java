@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Интерфейс сервиса базы данных задач
  */
-public interface TaskDbService {
+public interface TaskService {
 
     /**
      * Создать новую задачу и добавить в базу данных

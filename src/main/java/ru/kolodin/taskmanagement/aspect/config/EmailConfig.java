@@ -1,38 +1,38 @@
 package ru.kolodin.taskmanagement.aspect.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import java.util.HashMap;
 import java.util.Properties;
 
 @Slf4j
 @Configuration
+@EnableConfigurationProperties(EmailProperties.class)
 public class EmailConfig {
 
-    @Value("${mail.host}")
-    private String host;
+    private final EmailProperties emailProperties;
 
-    @Value("${mail.port}")
-    private int port;
-
-    @Value("${mail.username}")
-    private String userName;
-
-    @Value("${mail.password}")
-    private String password;
+    public EmailConfig(EmailProperties emailProperties) {
+        this.emailProperties = emailProperties;
+    }
 
     @Bean
     public JavaMailSender mailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost(host);
-        mailSender.setPort(port);
-        mailSender.setUsername(userName);
-        mailSender.setPassword(password);
+        HashMap<String, String> mailProperties = emailProperties.getMailProperties();
+        log.warn("Проверка установки Почты {} {} {} {} {} {}",
+                mailProperties.get("host"), mailProperties.get("port"), mailProperties.get("username"), mailProperties.get("password"),
+                mailProperties.get("mail-from"), mailProperties.get("mail-to"));
+        mailSender.setHost(mailProperties.get("host"));
+        mailSender.setPort(Integer.parseInt(mailProperties.get("port")));
+        mailSender.setUsername(mailProperties.get("username"));
+        mailSender.setPassword(mailProperties.get("password"));
 
         Properties props = new Properties();
         props.put("mail.transport.protocol", "smtp");
@@ -46,6 +46,8 @@ public class EmailConfig {
 
     @Bean
     public SimpleMailMessage templateMessage() {
+        SimpleMailMessage message = new SimpleMailMessage();
+        HashMap<String, String> mailProperties = emailProperties.getMailProperties();
         return new SimpleMailMessage();
     }
 

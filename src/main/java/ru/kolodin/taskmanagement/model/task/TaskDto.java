@@ -2,7 +2,7 @@ package ru.kolodin.taskmanagement.model.task;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
+
 import lombok.*;
 
 /**
@@ -42,6 +42,6 @@ public class TaskDto {
     /**
      * Уникальный идентификатор пользователя
      */
-    @JsonProperty("user_id")
+    @JsonProperty("userId")
     private Long userId;
 }

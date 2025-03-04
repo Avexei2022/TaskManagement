@@ -1,16 +1,13 @@
 package ru.kolodin.taskmanagement.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
 import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
-import ru.kolodin.taskmanagement.kafka.KafkaTaskProducer;
 import ru.kolodin.taskmanagement.model.task.TaskDto;
-import ru.kolodin.taskmanagement.model.task.TaskIdStatusDto;
-import ru.kolodin.taskmanagement.service.db.TaskDbService;
+import ru.kolodin.taskmanagement.service.db.TaskService;
 
 import java.util.List;
 
@@ -22,10 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskRestController {
 
-    private final TaskDbService taskDbService;
-    private final KafkaTaskProducer kafkaTaskProducer;
-    @Value("${task.kafka.topic.task-mng}")
-    private String topic;
+    private final TaskService taskService;
 
     /**
      * Создать новую задачу
@@ -36,7 +30,7 @@ public class TaskRestController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public void add(@RequestBody TaskDto taskDto) {
-        taskDbService.add(taskDto);
+        taskService.add(taskDto);
     }
 
     /**
@@ -49,7 +43,7 @@ public class TaskRestController {
     @LogMethodPerformance
     @GetMapping("/{id}")
     public TaskDto getById(@PathVariable("id") Long id) {
-        return taskDbService.getById(id);
+        return taskService.getById(id);
     }
 
     /**
@@ -62,8 +56,7 @@ public class TaskRestController {
     @PutMapping("/{id}")
     public void update(@PathVariable("id") Long id,
                                        @RequestBody TaskDto taskDto) {
-          taskDbService.update(id, taskDto);
-          kafkaTaskProducer.sendTo(topic, new TaskIdStatusDto(id, taskDto.getStatus()));
+          taskService.update(id, taskDto);
     }
 
     /**
@@ -74,7 +67,7 @@ public class TaskRestController {
     @LogMethodException
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id) {
-        taskDbService.deleteById(id);
+        taskService.deleteById(id);
     }
 
     /**
@@ -86,6 +79,6 @@ public class TaskRestController {
     @LogMethodPerformance
     @GetMapping("")
     public List<TaskDto> getAll() {
-        return taskDbService.getAll();
+        return taskService.getAll();
     }
 }

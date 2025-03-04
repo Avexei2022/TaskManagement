@@ -87,8 +87,9 @@ public class LogAspect {
             pointcut = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException)",
                 throwing = "exception")
     public void logMethodException(JoinPoint joinPoint, Throwable exception) {
-        log.error("Exception caught in {}. Exception type is {}",
+        log.error("Exception caught in {}. Exception type is {}. The reason is {}",
                 joinPoint.getSignature(),
-                exception.getClass().getName());
+                exception.getClass().getName(),
+                exception.getMessage());
     }
 }

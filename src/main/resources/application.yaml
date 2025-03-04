@@ -10,7 +10,7 @@ spring:
       jdbc:
         lob:
           non_contextual_creation: true
-      ddl-auto: update # create-drop
+      ddl-auto: create-drop #update
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/task_management_db
@@ -44,10 +44,11 @@ task:
         intervals:
           ms: 15000
 
-mail:
-  host: smtp.mail.ru
-  port: 465
-  username: javadev2024@mail.ru
-  password: mmaXw2bJQiyuYcPbtLML
-  mail-from: javadev2024@mail.ru
-  mail-to: javadev2024@mail.ru
+email:
+  mailProperties:
+    host: smtp.mail.ru
+    port: 465
+    username: javadev2024@mail.ru
+    password: mmaXw2bJQiyuYcPbtLML
+    mail-from: javadev2024@mail.ru
+    mail-to: javadev2024@mail.ru

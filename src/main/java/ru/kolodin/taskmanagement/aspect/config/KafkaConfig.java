@@ -105,14 +105,14 @@ public class KafkaConfig {
         return  handler;
     }
 
-    @Bean("task_template")
+    @Bean("taskTemplate")
     public KafkaTemplate<String, TaskIdStatusDto> kafkaTemplate(ProducerFactory<String, TaskIdStatusDto> producerFactory) {
         return new KafkaTemplate<>(producerFactory);
     }
 
     @Bean
     @ConditionalOnProperty(value = "kafka.producer.enable", havingValue = "true", matchIfMissing = true)
-    public KafkaTaskProducer producerTask(@Qualifier("task_template") KafkaTemplate<String, TaskIdStatusDto> template) {
+    public KafkaTaskProducer producerTask(@Qualifier("taskTemplate") KafkaTemplate<String, TaskIdStatusDto> template) {
         template.setDefaultTopic(taskTopic);
         return new KafkaTaskProducer(template);
     }
