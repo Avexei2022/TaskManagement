@@ -52,3 +52,6 @@ email:
     username: javadev2024@mail.ru
     password: mmaXw2bJQiyuYcPbtLML
     mail-from: javadev2024@mail.ru
+
+log:
+  enable: false

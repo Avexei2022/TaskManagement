@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 import ru.kolodin.aspect.annotation.log.LogMethodCall;
+import ru.kolodin.aspect.annotation.log.LogMethodException;
+import ru.kolodin.aspect.annotation.log.LogMethodPerformance;
+import ru.kolodin.aspect.annotation.log.LogMethodReturn;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -60,8 +63,8 @@ public class LogAspect {
         }
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        LogMethodCall logMethodCall = method.getAnnotation(LogMethodCall.class);
-        Level level = Level.valueOf(logMethodCall.level());
+        LogMethodReturn logMethodReturn = method.getAnnotation(LogMethodReturn.class);
+        Level level = Level.valueOf(logMethodReturn.level());
         logger.atLevel(level).log(stringBuilder.toString());
     }
 
@@ -70,7 +73,7 @@ public class LogAspect {
      * @param joinPoint метод
      * @return результат работы метода
      */
-    @Around("@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance)")
+    @Around("@annotation(ru.kolodin.aspect.annotation.log.LogMethodPerformance)")
     public Object logMethodPerformance(ProceedingJoinPoint joinPoint) {
         long startTime = System.currentTimeMillis();
 
@@ -85,8 +88,8 @@ public class LogAspect {
                 "Execution time of Method %s (ms): %s", joinPoint.getSignature(), endTime - startTime);
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        LogMethodCall logMethodCall = method.getAnnotation(LogMethodCall.class);
-        Level level = Level.valueOf(logMethodCall.level());
+        LogMethodPerformance logMethodPerformance = method.getAnnotation(LogMethodPerformance.class);
+        Level level = Level.valueOf(logMethodPerformance.level());
         logger.atLevel(level).log(infoMessage);
         return proceeded;
     }
@@ -106,8 +109,8 @@ public class LogAspect {
                 exception.getMessage());
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
-        LogMethodCall logMethodCall = method.getAnnotation(LogMethodCall.class);
-        Level level = Level.valueOf(logMethodCall.level());
+        LogMethodException logMethodException = method.getAnnotation(LogMethodException.class);
+        Level level = Level.valueOf(logMethodException.level());
         logger.atLevel(level).log(infoMessage);
     }
 }

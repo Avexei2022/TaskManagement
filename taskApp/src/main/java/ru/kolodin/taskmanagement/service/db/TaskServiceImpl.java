@@ -3,10 +3,10 @@ package ru.kolodin.taskmanagement.service.db;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall;
-import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException;
-import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodPerformance;
-import ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodReturn;
+import ru.kolodin.aspect.annotation.log.LogMethodCall;
+import ru.kolodin.aspect.annotation.log.LogMethodException;
+import ru.kolodin.aspect.annotation.log.LogMethodPerformance;
+import ru.kolodin.aspect.annotation.log.LogMethodReturn;
 import ru.kolodin.taskmanagement.kafka.KafkaTaskProducer;
 import ru.kolodin.taskmanagement.model.exception.AppException;
 import ru.kolodin.taskmanagement.model.exception.ResourceNotFoundException;
@@ -28,6 +28,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final KafkaTaskProducer kafkaTaskProducer;
+
     @Value("${task.kafka.topic.task-mng}")
     private String topic;
 
@@ -36,8 +37,8 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param taskDto DTO задачи
      */
-    @LogMethodCall
-    @LogMethodException
+    @LogMethodCall(level = "ERROR")
+    @LogMethodException(level = "ERROR")
     @Override
     public void add(TaskDto taskDto) {
         taskRepository.save(TaskMapper.toNewEntity(taskDto));
@@ -49,10 +50,10 @@ public class TaskServiceImpl implements TaskService {
      * @param id ID задачи
      * @return задача
      */
-    @LogMethodCall
-    @LogMethodReturn
-    @LogMethodException
-    @LogMethodPerformance
+    @LogMethodCall(level = "ERROR")
+    @LogMethodReturn(level = "ERROR")
+    @LogMethodException(level = "ERROR")
+    @LogMethodPerformance(level = "ERROR")
     @Override
     public TaskDto getById(Long id) {
         return TaskMapper.toDto(taskRepository.findById(id).orElseThrow(
@@ -66,8 +67,8 @@ public class TaskServiceImpl implements TaskService {
      * @param id      ID задачи
      * @param taskDto ДТО задачи
      */
-    @LogMethodCall
-    @LogMethodException
+    @LogMethodCall(level = "DEBUG")
+    @LogMethodException(level = "ERROR")
     @Override
     public void update(Long id, TaskDto taskDto) {
         if (taskRepository.existsById(id)) {
@@ -97,15 +98,15 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param id ID задачи
      */
-    @LogMethodCall
-    @LogMethodException
+    @LogMethodCall(level = "ERROR")
+    @LogMethodException(level = "ERROR")
     @Override
     public void deleteById(Long id) {
         if (taskRepository.existsById(id)) {
             try {
                 taskRepository.deleteById(id);
             } catch (AppException e) {
-                throw new AppException("Unable to delete task with ID " + id);
+                throw new AppException("Unable to delete task with ID " + id + ": " + e.getMessage());
             }
 
         } else {
@@ -119,10 +120,10 @@ public class TaskServiceImpl implements TaskService {
      *
      * @return список задач
      */
-    @LogMethodCall
-    @LogMethodReturn
-    @LogMethodException
-    @LogMethodPerformance
+    @LogMethodCall(level = "ERROR")
+    @LogMethodReturn(level = "ERROR")
+    @LogMethodException(level = "ERROR")
+    @LogMethodPerformance(level = "ERROR")
     @Override
     public List<TaskDto> getAll() {
         List<TaskDto> taskDtos;
@@ -130,7 +131,7 @@ public class TaskServiceImpl implements TaskService {
             taskDtos = taskRepository.findAll()
                     .stream().map(TaskMapper::toDto).toList();
         } catch (AppException e) {
-            throw new AppException("Unable to get list of tasks.");
+            throw new AppException("Unable to get list of tasks. " + e.getMessage());
         }
         if (taskDtos.isEmpty()) {
             throw new ResourceNotFoundException("List of tasks is empty");
