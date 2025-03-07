@@ -37,8 +37,8 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param taskDto DTO задачи
      */
-    @LogMethodCall(level = "ERROR")
-    @LogMethodException(level = "ERROR")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
     @Override
     public void add(TaskDto taskDto) {
         taskRepository.save(TaskMapper.toNewEntity(taskDto));
@@ -50,10 +50,10 @@ public class TaskServiceImpl implements TaskService {
      * @param id ID задачи
      * @return задача
      */
-    @LogMethodCall(level = "ERROR")
-    @LogMethodReturn(level = "ERROR")
-    @LogMethodException(level = "ERROR")
-    @LogMethodPerformance(level = "ERROR")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodReturn(level = "LogMethodReturn")
+    @LogMethodException(level = "LogMethodException")
+    @LogMethodPerformance(level = "LogMethodPerformance")
     @Override
     public TaskDto getById(Long id) {
         return TaskMapper.toDto(taskRepository.findById(id).orElseThrow(
@@ -67,8 +67,8 @@ public class TaskServiceImpl implements TaskService {
      * @param id      ID задачи
      * @param taskDto ДТО задачи
      */
-    @LogMethodCall(level = "DEBUG")
-    @LogMethodException(level = "ERROR")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
     @Override
     public void update(Long id, TaskDto taskDto) {
         if (taskRepository.existsById(id)) {
@@ -98,8 +98,8 @@ public class TaskServiceImpl implements TaskService {
      *
      * @param id ID задачи
      */
-    @LogMethodCall(level = "ERROR")
-    @LogMethodException(level = "ERROR")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
     @Override
     public void deleteById(Long id) {
         if (taskRepository.existsById(id)) {
@@ -120,10 +120,10 @@ public class TaskServiceImpl implements TaskService {
      *
      * @return список задач
      */
-    @LogMethodCall(level = "ERROR")
-    @LogMethodReturn(level = "ERROR")
-    @LogMethodException(level = "ERROR")
-    @LogMethodPerformance(level = "ERROR")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodReturn(level = "LogMethodReturn")
+    @LogMethodException(level = "LogMethodException")
+    @LogMethodPerformance(level = "LogMethodPerformance")
     @Override
     public List<TaskDto> getAll() {
         List<TaskDto> taskDtos;

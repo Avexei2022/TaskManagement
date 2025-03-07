@@ -26,8 +26,8 @@ public class TaskRestController {
      *
      * @param taskDto задача
      */
-    @LogMethodCall(level = "WARN")
-    @LogMethodException(level = "WARN")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public void add(@RequestBody TaskDto taskDto) {
@@ -40,9 +40,9 @@ public class TaskRestController {
      * @param id ID задачи
      * @return задача и статус ответа
      */
-    @LogMethodCall(level = "WARN")
-    @LogMethodException(level = "WARN")
-    @LogMethodPerformance(level = "WARN")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
+    @LogMethodPerformance(level = "LogMethodPerformance")
     @GetMapping("/{id}")
     public TaskDto getById(@PathVariable("id") Long id) {
         return taskService.getById(id);
@@ -54,8 +54,8 @@ public class TaskRestController {
      * @param id      ID задачи
      * @param taskDto ДТО задачи
      */
-    @LogMethodCall(level = "INFO")
-    @LogMethodException(level = "WARN")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
     @PutMapping("/{id}")
     public void update(@PathVariable("id") Long id,
                        @RequestBody TaskDto taskDto) {
@@ -67,8 +67,8 @@ public class TaskRestController {
      *
      * @param id ID задачи
      */
-    @LogMethodCall(level = "WARN")
-    @LogMethodException(level = "WARN")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id) {
         taskService.deleteById(id);
@@ -79,9 +79,9 @@ public class TaskRestController {
      *
      * @return список задач и статус ответа
      */
-    @LogMethodCall(level = "WARN")
-    @LogMethodException(level = "WARN")
-    @LogMethodPerformance(level = "WARN")
+    @LogMethodCall(level = "LogMethodCall")
+    @LogMethodException(level = "LogMethodException")
+    @LogMethodPerformance(level = "LogMethodPerformance")
     @GetMapping("")
     public List<TaskDto> getAll() {
         return taskService.getAll();

@@ -46,8 +46,6 @@ public class EmailConfig {
 
     @Bean
     public SimpleMailMessage templateMessage() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        HashMap<String, String> mailProperties = emailProperties.getMailProperties();
         return new SimpleMailMessage();
     }
 

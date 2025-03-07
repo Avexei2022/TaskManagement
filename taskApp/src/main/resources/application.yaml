@@ -54,4 +54,10 @@ email:
     mail-from: javadev2024@mail.ru
 
 log:
-  enable: false
+  enable: true
+  levels:
+    logProperties:
+      LogMethodCall: INFO
+      LogMethodReturn: WARN
+      LogMethodException: ERROR
+      LogMethodPerformance: DEBUG

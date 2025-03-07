@@ -22,7 +22,13 @@ import java.util.List;
 @Aspect
 public class LogAspect {
 
-    private final Logger logger = LoggerFactory.getLogger(LogAspect.class);
+    private final Logger logger;
+    private final LogAspectConfig logConfig;
+
+    public LogAspect(LogAspectConfig logConfig) {
+        this.logConfig = logConfig;
+        this.logger = LoggerFactory.getLogger(LogAspect.class);;
+    }
 
     /**
      * Логирование вызова методов с входными параметрами
@@ -40,8 +46,8 @@ public class LogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         LogMethodCall logMethodCall = method.getAnnotation(LogMethodCall.class);
-        Level level = Level.valueOf(logMethodCall.level());
-        logger.atLevel(level).log(stringBuilder.toString());
+        String levelString = logConfig.levels().get(logMethodCall.level());
+        showLog(levelString, stringBuilder.toString());
     }
 
     /**
@@ -64,8 +70,8 @@ public class LogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         LogMethodReturn logMethodReturn = method.getAnnotation(LogMethodReturn.class);
-        Level level = Level.valueOf(logMethodReturn.level());
-        logger.atLevel(level).log(stringBuilder.toString());
+        String levelString = logConfig.levels().get(logMethodReturn.level());
+        showLog(levelString, stringBuilder.toString());
     }
 
     /**
@@ -89,8 +95,8 @@ public class LogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         LogMethodPerformance logMethodPerformance = method.getAnnotation(LogMethodPerformance.class);
-        Level level = Level.valueOf(logMethodPerformance.level());
-        logger.atLevel(level).log(infoMessage);
+        String levelString = logConfig.levels().get(logMethodPerformance.level());
+        showLog(levelString, infoMessage);
         return proceeded;
     }
 
@@ -110,7 +116,15 @@ public class LogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         LogMethodException logMethodException = method.getAnnotation(LogMethodException.class);
-        Level level = Level.valueOf(logMethodException.level());
-        logger.atLevel(level).log(infoMessage);
+        String levelString = logConfig.levels().get(logMethodException.level());
+        showLog(levelString, infoMessage);
+    }
+
+    private void showLog(String levelString, String message) {
+        if (levelString == null || levelString.isEmpty()) {
+            levelString = "INFO";
+        }
+        Level level = Level.valueOf(levelString);
+        logger.atLevel(level).log(message);
     }
 }
