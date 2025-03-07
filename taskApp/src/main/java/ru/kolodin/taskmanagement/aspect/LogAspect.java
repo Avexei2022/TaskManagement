@@ -20,6 +20,7 @@ public class LogAspect {
 
     /**
      * Логирование вызова методов с входными параметрами
+     *
      * @param joinPoint вызов метода
      */
     @Before("@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodCall)")
@@ -36,6 +37,7 @@ public class LogAspect {
 
     /**
      * Логирование успешной работы метода с возвращаемыми значениями.
+     *
      * @param result возвращаемое значение.
      */
     @AfterReturning(
@@ -56,6 +58,7 @@ public class LogAspect {
 
     /**
      * Логирование времени работы метода (производительности кода)
+     *
      * @param joinPoint метод
      * @return результат работы метода
      */
@@ -80,12 +83,13 @@ public class LogAspect {
 
     /**
      * Логирование исключений в методах
+     *
      * @param joinPoint метод
      * @param exception исключение
      */
     @AfterThrowing(
             pointcut = "@annotation(ru.kolodin.taskmanagement.aspect.annotation.log.LogMethodException)",
-                throwing = "exception")
+            throwing = "exception")
     public void logMethodException(JoinPoint joinPoint, Throwable exception) {
         log.error("Exception caught in {}. Exception type is {}. The reason is {}",
                 joinPoint.getSignature(),

@@ -14,7 +14,6 @@
     <groupId>ru.kolodin</groupId>
     <artifactId>taskApp</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
     <name>taskApp</name>
 
     <properties>

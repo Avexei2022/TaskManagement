@@ -4,13 +4,13 @@ server:
 #SPRING
 spring:
   application:
-    name: TaskManagement
+    name: taskApp
   jpa:
     hibernate:
       jdbc:
         lob:
           non_contextual_creation: true
-      ddl-auto: create-drop #update
+      ddl-auto: update #create-drop
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/task_management_db
@@ -47,8 +47,8 @@ task:
 email:
   mailProperties:
     host: smtp.mail.ru
+    mail-to: javadev2024@mail.ru
     port: 465
     username: javadev2024@mail.ru
     password: mmaXw2bJQiyuYcPbtLML
     mail-from: javadev2024@mail.ru
-    mail-to: javadev2024@mail.ru

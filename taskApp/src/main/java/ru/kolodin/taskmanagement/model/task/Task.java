@@ -50,7 +50,7 @@ public class Task {
      * Уникальный идентификатор пользователя
      */
     @Column(name = "user_id")
-     private Long userId;
+    private Long userId;
 
     @Override
     public boolean equals(Object o) {

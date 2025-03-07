@@ -33,6 +33,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * Создать новую задачу и добавить в базу данных
+     *
      * @param taskDto DTO задачи
      */
     @LogMethodCall
@@ -44,6 +45,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * Получить задачу по ID
+     *
      * @param id ID задачи
      * @return задача
      */
@@ -60,7 +62,8 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * Обновить задачу
-     * @param id ID задачи
+     *
+     * @param id      ID задачи
      * @param taskDto ДТО задачи
      */
     @LogMethodCall
@@ -69,7 +72,7 @@ public class TaskServiceImpl implements TaskService {
     public void update(Long id, TaskDto taskDto) {
         if (taskRepository.existsById(id)) {
             try {
-                Task taskToSave =  TaskMapper.toUpdateEntityById(id, taskDto);
+                Task taskToSave = TaskMapper.toUpdateEntityById(id, taskDto);
                 Task taskToUpdate = taskRepository.findById(id).orElseThrow();
                 boolean isAllSame = taskToSave.equals(taskToUpdate);
                 boolean isStatusUpdated = !taskToSave.getStatus().equals(taskToUpdate.getStatus());
@@ -91,6 +94,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * Удалить задачу по ID
+     *
      * @param id ID задачи
      */
     @LogMethodCall
@@ -112,6 +116,7 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * Получить список всех задач
+     *
      * @return список задач
      */
     @LogMethodCall

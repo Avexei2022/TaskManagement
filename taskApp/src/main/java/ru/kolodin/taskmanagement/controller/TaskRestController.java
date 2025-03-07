@@ -23,6 +23,7 @@ public class TaskRestController {
 
     /**
      * Создать новую задачу
+     *
      * @param taskDto задача
      */
     @LogMethodCall
@@ -35,6 +36,7 @@ public class TaskRestController {
 
     /**
      * Получить задачу по ID
+     *
      * @param id ID задачи
      * @return задача и статус ответа
      */
@@ -48,19 +50,21 @@ public class TaskRestController {
 
     /**
      * Обновить задачу
-     * @param id ID задачи
+     *
+     * @param id      ID задачи
      * @param taskDto ДТО задачи
      */
     @LogMethodCall
     @LogMethodException
     @PutMapping("/{id}")
     public void update(@PathVariable("id") Long id,
-                                       @RequestBody TaskDto taskDto) {
-          taskService.update(id, taskDto);
+                       @RequestBody TaskDto taskDto) {
+        taskService.update(id, taskDto);
     }
 
     /**
      * Удалить задачу по ID
+     *
      * @param id ID задачи
      */
     @LogMethodCall
@@ -72,6 +76,7 @@ public class TaskRestController {
 
     /**
      * Получить список всех задач
+     *
      * @return список задач и статус ответа
      */
     @LogMethodCall

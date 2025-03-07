@@ -1,4 +1,4 @@
-package ru.kolodin.taskmanagement.aspect.config;
+package ru.kolodin.taskmanagement.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

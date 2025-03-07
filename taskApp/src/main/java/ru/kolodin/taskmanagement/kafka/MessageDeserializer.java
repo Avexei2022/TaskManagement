@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MessageDeserializer <T> extends JsonDeserializer<T> {
+public class MessageDeserializer<T> extends JsonDeserializer<T> {
 
 
     @Override

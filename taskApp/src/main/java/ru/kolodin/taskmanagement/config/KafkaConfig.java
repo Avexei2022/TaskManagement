@@ -102,7 +102,7 @@ public class KafkaConfig {
         handler.setRetryListeners(((record, ex, deliveryAttempt) ->
                 log.error(" RetryListener message = {}, offset = {} deliveryAttempt = {}",
                         ex.getMessage(), record.offset(), deliveryAttempt)));
-        return  handler;
+        return handler;
     }
 
     @Bean("taskTemplate")

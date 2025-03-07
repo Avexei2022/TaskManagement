@@ -21,8 +21,8 @@ public class KafkaTaskConsumer {
     private final NotificationService notificationService;
 
     @KafkaListener(id = "${task.kafka.consumer.group-id}",
-                    topics = "${task.kafka.topic.task-mng}",
-                     containerFactory = "kafkaListenerContainerFactory")
+            topics = "${task.kafka.topic.task-mng}",
+            containerFactory = "kafkaListenerContainerFactory")
     public void listener(@Payload List<TaskIdStatusDto> taskIdStatusDtos,
                          Acknowledgment ack,
                          @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,

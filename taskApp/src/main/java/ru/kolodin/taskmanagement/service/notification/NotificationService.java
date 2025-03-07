@@ -4,5 +4,6 @@ import ru.kolodin.taskmanagement.model.task.TaskIdStatusDto;
 
 public interface NotificationService {
     void toLog(TaskIdStatusDto taskIdStatusDto);
+
     void toMail(TaskIdStatusDto taskIdStatusDto);
 }

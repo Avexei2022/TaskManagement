@@ -12,6 +12,7 @@ public class TaskMapper {
 
     /**
      * ДТО в задачу
+     *
      * @param taskDto ДТО задачи
      * @return задача
      */
@@ -26,6 +27,7 @@ public class TaskMapper {
 
     /**
      * Задача в ДТО
+     *
      * @param task задача
      * @return ДТО задачи
      */
@@ -41,6 +43,7 @@ public class TaskMapper {
 
     /**
      * ДТО в новую задачу
+     *
      * @param taskDto ДТО задачи
      * @return задача без Id
      */
@@ -56,7 +59,8 @@ public class TaskMapper {
 
     /**
      * ДТО в новую задачу с заменой ID
-     * @param id ID задачи для обновления
+     *
+     * @param id      ID задачи для обновления
      * @param taskDto ДТО задачи
      * @return задача
      */

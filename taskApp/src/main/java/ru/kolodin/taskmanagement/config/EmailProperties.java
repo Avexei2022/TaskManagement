@@ -1,4 +1,4 @@
-package ru.kolodin.taskmanagement.aspect.config;
+package ru.kolodin.taskmanagement.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

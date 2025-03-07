@@ -18,6 +18,7 @@ public class TaskRestExceptionHandler {
 
     /**
      * Ответ при недоступности ресурса или отсутствии данных
+     *
      * @param e исключение
      * @return Ответ
      */
@@ -29,6 +30,7 @@ public class TaskRestExceptionHandler {
 
     /**
      * Ответ при неверном запросе
+     *
      * @param e исключение
      * @return Ответ
      */
@@ -40,6 +42,7 @@ public class TaskRestExceptionHandler {
 
     /**
      * Ответ при в случае непредвиденных исключений
+     *
      * @param e исключение
      * @return ответ
      */

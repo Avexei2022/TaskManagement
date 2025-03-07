@@ -7,6 +7,7 @@ public class ResourceNotFoundException extends AppException {
 
     /**
      * Исключение при недоступности ресурса или об отсутствии данных
+     *
      * @param message текст сообщения об ошибке
      */
     public ResourceNotFoundException(String message) {
