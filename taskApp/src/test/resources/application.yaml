@@ -1,0 +1,23 @@
+server:
+  port:8081
+
+spring:
+  application:
+    name: taskApp
+  datasource:
+    url: jdbc:tc:postgresql:latest:///test_task_db
+    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+
+log:
+  enable: false
+  levels:
+    logProperties:
+      LogMethodCall: INFO
+      LogMethodReturn: WARN
+      LogMethodException: ERROR
+      LogMethodPerformance: DEBUG

@@ -41,7 +41,8 @@ public class TaskServiceImpl implements TaskService {
     @LogMethodException(level = "LogMethodException")
     @Override
     public void add(TaskDto taskDto) {
-        taskRepository.save(TaskMapper.toNewEntity(taskDto));
+        Task task = TaskMapper.toNewEntity(taskDto);
+        taskRepository.save(task);
     }
 
     /**
