@@ -28,7 +28,7 @@ public class TaskRestController {
      */
     @LogMethodCall(level = "LogMethodCall")
     @LogMethodException(level = "LogMethodException")
-    @PostMapping("")
+    @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public void add(@RequestBody TaskDto taskDto) {
         taskService.add(taskDto);
@@ -69,7 +69,7 @@ public class TaskRestController {
      */
     @LogMethodCall(level = "LogMethodCall")
     @LogMethodException(level = "LogMethodException")
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         taskService.deleteById(id);
     }
@@ -82,7 +82,7 @@ public class TaskRestController {
     @LogMethodCall(level = "LogMethodCall")
     @LogMethodException(level = "LogMethodException")
     @LogMethodPerformance(level = "LogMethodPerformance")
-    @GetMapping("")
+    @GetMapping("/")
     public List<TaskDto> getAll() {
         return taskService.getAll();
     }

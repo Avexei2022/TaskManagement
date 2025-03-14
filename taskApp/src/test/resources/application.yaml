@@ -13,6 +13,41 @@ spring:
       ddl-auto: create-drop
     show-sql: true
 
+task:
+  scan-path: ru.kolodin.taskmanagement
+  kafka:
+    bootstrap:
+      server: localhost:9092
+    consumer:
+      group-id: task-group
+      max.poll.records: 10
+    producer:
+      enable: true
+    topic:
+      task-mng: task_management
+    listener:
+      poll-timeout: 1000
+    session:
+      timeout:
+        ms: 15000
+    max:
+      partition:
+        fetch:
+          bytes: 300000
+      poll:
+        records: 1
+        intervals:
+          ms: 15000
+
+email:
+  mailProperties:
+    host: smtp.mail.ru
+    mail-to: javadev2024@mail.ru
+    port: 465
+    username: javadev2024@mail.ru
+    password: xxxxxxxxxxxxxxxxx
+    mail-from: javadev2024@mail.ru
+
 log:
   enable: false
   levels:
