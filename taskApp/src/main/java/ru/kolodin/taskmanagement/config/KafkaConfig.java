@@ -28,6 +28,7 @@ import java.util.Map;
 
 @Slf4j
 @Configuration
+@ConditionalOnProperty(value = "task.kafka.enable", havingValue = "true", matchIfMissing = true)
 public class KafkaConfig {
 
     @Value("task.kafka.consumer.group-id")
@@ -111,7 +112,7 @@ public class KafkaConfig {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "kafka.producer.enable", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(value = "task.kafka.producer.enable", havingValue = "true", matchIfMissing = true)
     public KafkaTaskProducer producerTask(@Qualifier("taskTemplate") KafkaTemplate<String, TaskIdStatusDto> template) {
         template.setDefaultTopic(taskTopic);
         return new KafkaTaskProducer(template);

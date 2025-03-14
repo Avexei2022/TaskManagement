@@ -16,13 +16,14 @@ spring:
 task:
   scan-path: ru.kolodin.taskmanagement
   kafka:
+    enable: false
     bootstrap:
       server: localhost:9092
     consumer:
       group-id: task-group
       max.poll.records: 10
     producer:
-      enable: true
+      enable: false
     topic:
       task-mng: task_management
     listener:
