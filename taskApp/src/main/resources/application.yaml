@@ -49,9 +49,9 @@ email:
     host: smtp.mail.ru
     mail-to: javadev2024@mail.ru
     port: 465
-    username: javadev2024@mail.ru
-    password: mmaXw2bJQiyuYcPbtLML
-    mail-from: javadev2024@mail.ru
+    username: xxxxxxxxx@xxxx.xx
+    password: xxxxxxxxxxxxxxx
+    mail-from: xxxxxxxxx@xxxx.xx
 
 log:
   enable: true
